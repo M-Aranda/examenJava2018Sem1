@@ -90,15 +90,15 @@ public class App extends javax.swing.JFrame {
         txtAnioDeCreacion = new javax.swing.JTextField();
         txtNombreDeObra = new javax.swing.JTextField();
         txtTamanio = new javax.swing.JTextField();
-        cboAutor = new javax.swing.JComboBox<>();
-        cboTecnica = new javax.swing.JComboBox<>();
-        cboGenero = new javax.swing.JComboBox<>();
-        cboSala = new javax.swing.JComboBox<>();
+        cboAutor = new javax.swing.JComboBox();
+        cboTecnica = new javax.swing.JComboBox();
+        cboGenero = new javax.swing.JComboBox();
+        cboSala = new javax.swing.JComboBox();
         btnCancelar = new javax.swing.JButton();
         btnRegistrar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         lblVerSala = new javax.swing.JLabel();
-        cboSeleccionarSalaAVer = new javax.swing.JComboBox<>();
+        cboSeleccionarSalaAVer = new javax.swing.JComboBox();
         btnVerObrasDeSalaSeleccionada = new javax.swing.JButton();
         btnVerObrasDeTodasLasSalas = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
@@ -153,13 +153,13 @@ public class App extends javax.swing.JFrame {
             }
         });
 
-        cboAutor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboAutor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        cboTecnica.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboTecnica.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        cboGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboGenero.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        cboSala.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboSala.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -184,7 +184,7 @@ public class App extends javax.swing.JFrame {
 
         lblVerSala.setText("Sala");
 
-        cboSeleccionarSalaAVer.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboSeleccionarSalaAVer.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnVerObrasDeSalaSeleccionada.setText("Ver");
         btnVerObrasDeSalaSeleccionada.addActionListener(new java.awt.event.ActionListener() {
@@ -397,7 +397,8 @@ public class App extends javax.swing.JFrame {
         iniciarComboBoxAutor();
         iniciarComboBoxTecnica();
         iniciarComboBoxGenero();
-        iniciarComboBoxSala();
+        iniciarComboBoxSalaAVer();
+        iniciarComboBoxSalas();
     }
 
     private void iniciarComboBoxAutor() throws SQLException {
@@ -421,8 +422,13 @@ public class App extends javax.swing.JFrame {
         tecnicas = d.getTecnicas();
 
         for (Tecnica t : tecnicas) {
-            cboTecnica.addItem(t.getNombre());
+            cboTecnica.addItem(t);
         }
+        
+        //La siguiente linea te permite rescatar el objeto que esta seleccionado
+        //luego puedes usar los metodos del objeto rescatado, y por ende, ver sus atributos
+        //Tecnica t = (Tecnica)cboTecnica.getSelectedItem();
+        
 
     }
 
@@ -434,13 +440,12 @@ public class App extends javax.swing.JFrame {
         generos = d.getGeneros();
 
         for (Genero g : generos) {
-            cboGenero.addItem(g.getNombre());
+            cboGenero.addItem(g);
         }
 
     }
 
-    private void iniciarComboBoxSala() throws SQLException {
-        cboSala.removeAllItems();
+    private void iniciarComboBoxSalaAVer() throws SQLException {
         cboSeleccionarSalaAVer.removeAllItems();
 
         List<Sala> salas = new ArrayList();
@@ -448,8 +453,21 @@ public class App extends javax.swing.JFrame {
         salas = d.getSalas();
 
         for (Sala s : salas) {
-            cboSala.addItem(s.getNombre());
-            cboSeleccionarSalaAVer.addItem(s.getNombre());
+            cboSeleccionarSalaAVer.addItem(s);
+        }
+
+    }
+
+    private void iniciarComboBoxSalas() throws SQLException {
+        cboSala.removeAllItems();
+
+        List<Sala> salas = new ArrayList();
+
+        salas = d.getSalas();
+
+        for (Sala s : salas) {
+            cboSala.addItem(s);
+
         }
 
     }
@@ -763,11 +781,11 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton btnVerObrasDeSalaSeleccionada;
     private javax.swing.JButton btnVerObrasDeTodasLasSalas;
-    private javax.swing.JComboBox<String> cboAutor;
-    private javax.swing.JComboBox<String> cboGenero;
-    private javax.swing.JComboBox<String> cboSala;
-    private javax.swing.JComboBox<String> cboSeleccionarSalaAVer;
-    private javax.swing.JComboBox<String> cboTecnica;
+    private javax.swing.JComboBox cboAutor;
+    private javax.swing.JComboBox cboGenero;
+    private javax.swing.JComboBox cboSala;
+    private javax.swing.JComboBox cboSeleccionarSalaAVer;
+    private javax.swing.JComboBox cboTecnica;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JFrame jfrSesion;

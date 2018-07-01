@@ -13,6 +13,7 @@ PRIMARY KEY(id)
 
 
 
+
 CREATE TABLE encargadoDeSala(
 id INT AUTO_INCREMENT,
 nombre VARCHAR (30),
@@ -115,4 +116,4 @@ INSERT INTO obra VALUES (NULL,3,4,4,1751,'Divinidad',4,3);
 
 
 
-DROP DATABASE obrasMuseo;
+-- DROP DATABASE obrasMuseo;

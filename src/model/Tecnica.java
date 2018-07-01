@@ -35,4 +35,11 @@ public class Tecnica extends CualidadNoMedible {
         super.nombre = nombre;
     }
 
+    @Override
+    public String toString() {
+        return super.nombre;
+    }
+
+    
+    
 }

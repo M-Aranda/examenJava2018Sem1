@@ -57,4 +57,11 @@ public class EncargadoDeSala extends Persona {
         super.rut = rut;
     }
 
+    @Override
+    public String toString() {
+        return super.nombre;
+    }
+
+    
+    
 }
