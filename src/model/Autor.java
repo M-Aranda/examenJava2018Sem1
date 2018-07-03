@@ -71,7 +71,7 @@ public class Autor extends Persona {
 
     @Override
     public String toString() {
-        return super.nombre;
+        return super.nombre+" "+apellido;
     }
     
 

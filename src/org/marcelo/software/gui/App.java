@@ -549,15 +549,36 @@ public class App extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int idObraAEliminar = Integer.parseInt(txtCodigoObra.getText());
-        try {
-            d.eliminarObra(idObraAEliminar);
-            cargarTablaDatos();
-        } catch (SQLException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        
+        
+        
+       int opcion= JOptionPane.showOptionDialog(null, 
+        "Esta por eliminar una obra. Desea continuar?", 
+        "Aviso", 
+        JOptionPane.OK_CANCEL_OPTION, 
+        JOptionPane.INFORMATION_MESSAGE, 
+        null, 
+        new String[]{"Si", "No"}, 
+        "default");
+        
+        
+
+        //int dialogo = JOptionPane.showConfirmDialog(null, "Esta por eliminar una obra. Desea continuar?");
+        if (opcion == JOptionPane.YES_OPTION) {
+            try {
+                d.eliminarObra(idObraAEliminar);
+                cargarTablaDatos();
+            } catch (SQLException ex) {
+                Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            habilitarComponentesDeIngresoDeDatosParaRegistrarObras();
+            btnEliminar.setEnabled(false);
+            JOptionPane.showMessageDialog(null, "Elminacion exitosa");
+
+        } else if (opcion == JOptionPane.NO_OPTION) {
+            btnCancelar.doClick();
         }
-        habilitarComponentesDeIngresoDeDatosParaRegistrarObras();
-        btnEliminar.setEnabled(false);
-        JOptionPane.showMessageDialog(null, "Elminacion exitosa");
+
 
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -592,53 +613,73 @@ public class App extends javax.swing.JFrame {
 //        String tamanio = "";
 //        String anchoComoString = "";
 //        String altoComoString = "";
-        try {
-            Autor autor = (Autor) cboAutor.getSelectedItem();
-            Tecnica tecnica = (Tecnica) cboTecnica.getSelectedItem();
-            Genero genero = (Genero) cboGenero.getSelectedItem();
+
+
+        
+        
+       int opcion= JOptionPane.showOptionDialog(null, 
+        "Esta por registrar una obra. Desea continuar?", 
+        "Aviso", 
+        JOptionPane.OK_CANCEL_OPTION, 
+        JOptionPane.INFORMATION_MESSAGE, 
+        null, 
+        new String[]{"Si", "No"}, 
+        "default");
+        
+
+        //int dialogo = JOptionPane.showConfirmDialog(null, "Esta por registrar una obra. Desea continuar?");
+        if (opcion == JOptionPane.YES_OPTION) {
+            try {
+                Autor autor = (Autor) cboAutor.getSelectedItem();
+                Tecnica tecnica = (Tecnica) cboTecnica.getSelectedItem();
+                Genero genero = (Genero) cboGenero.getSelectedItem();
 //            try {
-            int anioCreacion = Integer.parseInt(txtAnioDeCreacion.getText());
+                int anioCreacion = Integer.parseInt(txtAnioDeCreacion.getText());
 //            } catch (NumberFormatException ne) {
 //                JOptionPane.showMessageDialog(null, "Verifique que todos los campos tengan datos validos");
 //
 //            }
 
-            String nombreObra = txtNombreDeObra.getText();
+                String nombreObra = txtNombreDeObra.getText();
 
 //            try {
-            String tamanio = txtTamanio.getText();
-            tamanio = tamanio.trim();
-            String[] partes = tamanio.split(",");
-            String anchoComoString = partes[0];
-            String altoComoString = partes[1];
+                String tamanio = txtTamanio.getText();
+                tamanio = tamanio.trim();
+                String[] partes = tamanio.split(",");
+                String anchoComoString = partes[0];
+                String altoComoString = partes[1];
 //            } catch (Exception e) {
 //                JOptionPane.showMessageDialog(null, "Verifique que todos los campos tengan datos validos");
 //
 //            }
 //
 //            try {
-            int ancho = Integer.parseInt(anchoComoString);
-            int alto = Integer.parseInt(altoComoString);
+                int ancho = Integer.parseInt(anchoComoString);
+                int alto = Integer.parseInt(altoComoString);
 
 //            } catch (NumberFormatException ne) {
 //                JOptionPane.showMessageDialog(null, "Verifique que todos los campos tengan datos validos");
 //
 //            }
-            Sala sala = (Sala) cboSala.getSelectedItem();
+                Sala sala = (Sala) cboSala.getSelectedItem();
 
-            d.crearTamanio(ancho, alto);
-            int idDeTamanio = d.obtenerIdTamanioMasReciente();
-            Tamanio tam = d.getTamanioPorId(idDeTamanio);
-            Obra obra = new Obra(1, autor, tecnica, genero, anioCreacion, nombreObra, tam, sala);
-            System.out.println(obra);
-            d.registrarObra(obra);
-            cargarTablaDatos();
-            JOptionPane.showMessageDialog(null, "Registro Exitoso");
-        } catch (SQLException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Verifique que todos los campos tengan datos validos");
-        } finally {
+                d.crearTamanio(ancho, alto);
+                int idDeTamanio = d.obtenerIdTamanioMasReciente();
+                Tamanio tam = d.getTamanioPorId(idDeTamanio);
+                Obra obra = new Obra(1, autor, tecnica, genero, anioCreacion, nombreObra, tam, sala);
+                System.out.println(obra);
+                d.registrarObra(obra);
+                cargarTablaDatos();
+                JOptionPane.showMessageDialog(null, "Registro Exitoso");
+            } catch (SQLException ex) {
+                Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Verifique que todos los campos tengan datos validos");
+            } finally {
+                resetearComponentesDeIngresoDeDatosParaRegistrarObras();
+            }
+
+        } else if (opcion == JOptionPane.NO_OPTION) {
             resetearComponentesDeIngresoDeDatosParaRegistrarObras();
         }
 

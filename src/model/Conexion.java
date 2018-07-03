@@ -29,7 +29,7 @@ public class Conexion {
     }
    
     public void ejecutar(String query) throws SQLException{
-        System.out.println(query);
+        //System.out.println(query);
        
         sen = con.createStatement();
         sen.executeUpdate(query);
@@ -37,7 +37,7 @@ public class Conexion {
     }
    
     public ResultSet ejecutarSelect(String query) throws SQLException{
-        System.out.println(query);
+        //System.out.println(query);
        
         sen = con.createStatement();
         rs = sen.executeQuery(query);
