@@ -10,6 +10,14 @@ public class Data {
     private final Conexion con;
     private String query;
     private ResultSet rs;
+    private ResultSet rsEncargadoDeSala;
+
+    private ResultSet rsTecnica;
+    private ResultSet rsGenero;
+    private ResultSet rsTamanio;
+    private ResultSet rsSala;
+    private ResultSet rsAutor;
+    //necesito varios ResultSet para poder obtener mas de un resultado en metodos con consultas multiples
 
     public Data() throws ClassNotFoundException, SQLException {
         con = new Conexion("localhost", "obrasMuseo", "root", "");
@@ -75,6 +83,7 @@ public class Data {
             Genero g = new Genero(id, nombre);
 
             generos.add(g);
+
         }
 
         return generos;
@@ -88,6 +97,7 @@ public class Data {
 
         rs = con.ejecutarSelect(query);
 
+        //por alguna razon no hace el next si descomento el metodo getEncargado Y declaro estas variables
         while (rs.next()) {
             int id = rs.getInt(1);
             String nombre = rs.getString(2);
@@ -97,14 +107,141 @@ public class Data {
             boolean tieneAlarmaContraIncendios = rs.getBoolean(6);
             int encargadoDeSalafk = rs.getInt(7);
 
+            EncargadoDeSala e = getEncargadoDeSalaPorId(encargadoDeSalafk); //esto no se podia hacer. Por este metodo dentro del rs next que no avanzaba
+
             Sala s = new Sala(id, nombre, cantLamp, cantGrados,
-                    tieneCierreCentralizado, tieneAlarmaContraIncendios, encargadoDeSalafk);
+                    tieneCierreCentralizado, tieneAlarmaContraIncendios, e);
 
             salas.add(s);
 
         }
 
         return salas;
+    }
+
+    public Sala getSalaPorId(int id) throws SQLException {
+
+        query = "SELECT * FROM sala WHERE id=" + id + "";
+        Sala s = new Sala();
+
+        rsSala = con.ejecutarSelect(query);
+
+        while (rsSala.next()) {
+            int idSala = rsSala.getInt(1);
+            String nombre = rsSala.getString(2);
+            int cantLamp = rsSala.getInt(3);
+            int cantGrados = rsSala.getInt(4);
+            boolean tieneCierreCentralizado = rsSala.getBoolean(5);
+            boolean tieneAlarmaContraIncendios = rsSala.getBoolean(6);
+            int encargadoDeSalafk = rsSala.getInt(7);
+
+            EncargadoDeSala e = getEncargadoDeSalaPorId(encargadoDeSalafk);
+
+            s.setId(idSala);
+            s.setNombre(nombre);
+            s.setCantidadDeLamparasInstaladas(cantLamp);
+            s.setTempEnGradosCelsiusDeLaSala(cantGrados);
+            s.setTieneCierreCentralizado(tieneCierreCentralizado);
+            s.setTieneAlarmaContraIncendios(tieneAlarmaContraIncendios);
+            s.setEncargadoDeSalafk(e);
+
+        }
+
+        return s;
+
+    }
+
+    public EncargadoDeSala getEncargadoDeSalaPorId(int id) throws SQLException {
+
+        query = "SELECT * FROM encargadoDeSala WHERE id=" + id + "";
+
+        EncargadoDeSala e = new EncargadoDeSala("aaa", 1999, 2, "asd", "200");
+        rsEncargadoDeSala = con.ejecutarSelect(query);
+        while (rsEncargadoDeSala.next()) {
+
+            int idEncargado = rsEncargadoDeSala.getInt(1);
+            String nombre = rsEncargadoDeSala.getString(2);
+            String rut = rsEncargadoDeSala.getString(3);
+            String profesion = rsEncargadoDeSala.getString(4);
+            int anioDeIngreso = rsEncargadoDeSala.getInt(5);
+
+            e.setId(idEncargado);
+            e.setNombre(nombre);
+            e.setRut(rut);
+            e.setProfesion(profesion);
+            e.setAnioDeIngreso(anioDeIngreso);
+        }
+
+        return e;
+
+    }
+
+    public Autor getAutorPorId(int id) throws SQLException {
+
+        query = "SELECT * FROM autor WHERE id=" + id + "";
+
+        Autor a = new Autor("aaa", "aaa", 12, "aaa", "222");
+        rsAutor = con.ejecutarSelect(query);
+        while (rsAutor.next()) {
+
+            int idAutor = rsAutor.getInt(1);
+            String nombre = rsAutor.getString(2);
+            String apellido = rsAutor.getString(3);
+            String rut = rsAutor.getString(4);
+            String nacionalidad = rsAutor.getString(5);
+
+            a.setId(idAutor);
+            a.setNombre(nombre);
+            a.setApellido(apellido);
+            a.setRut(rut);
+            a.setNacionalidad(nacionalidad);
+
+        }
+
+        return a;
+
+    }
+
+    public Tecnica getTecnicaPorId(int id) throws SQLException {
+
+        query = "SELECT * FROM tecnica WHERE id=" + id + "";
+
+        Tecnica t = new Tecnica(1, "mhh");
+        rsTecnica = con.ejecutarSelect(query);
+
+        while (rsTecnica.next()) {
+
+            int idTecnica = rsTecnica.getInt(1);
+            String nombreTecnica = rsTecnica.getString(2);
+
+            t.setId(idTecnica);
+            t.setNombre(nombreTecnica);
+
+        }
+
+        return t;
+
+    }
+
+    public Genero getGeneroPorId(int id) throws SQLException {
+
+        query = "SELECT * FROM genero WHERE id=" + id + "";
+
+        Genero g = new Genero(1, "mhh");
+        rsGenero = con.ejecutarSelect(query);
+
+        while (rsGenero.next()) {
+
+            int idGenero = rsGenero.getInt(1);
+            String nombreGenero = rsGenero.getString(2);
+
+            g.setId(idGenero);
+            g.setNombre(nombreGenero);
+
+        }
+
+        return g;
+
     }
 
     public List<Obra> getObras() throws SQLException {
@@ -116,15 +253,21 @@ public class Data {
 
         while (rs.next()) {
             int id = rs.getInt(1);
-            int autor = rs.getInt(2);
-            int tecnica = rs.getInt(3);
-            int genero = rs.getInt(4);
+            int autorFk = rs.getInt(2);
+            int tecnicaFk = rs.getInt(3);
+            int generoFk = rs.getInt(4);
             int anioCreacion = rs.getInt(5);
             String nombrePintura = rs.getString(6);
             int tamanio_fk = rs.getInt(7);
             int ubicacion = rs.getInt(8);
 
-            Obra o = new Obra(id, autor, tecnica, genero, anioCreacion, nombrePintura, tamanio_fk, ubicacion);
+            Autor autor = getAutorPorId(autorFk);
+            Tecnica tecnica = getTecnicaPorId(tecnicaFk);
+            Genero genero = getGeneroPorId(generoFk);
+            Tamanio tamanio = getTamanioPorId(tamanio_fk);
+            Sala sala = getSalaPorId(ubicacion);
+
+            Obra o = new Obra(id, autor, tecnica, genero, anioCreacion, nombrePintura, tamanio, sala);
 
             obras.add(o);
 
@@ -140,14 +283,29 @@ public class Data {
         rs = con.ejecutarSelect(query);
 
         while (rs.next()) {
-            o.setId(rs.getInt(1));
-            o.setAutor_fk(rs.getInt(2));
-            o.setTecnica_fk(rs.getInt(3));
-            o.setGenero_fk(rs.getInt(4));
-            o.setAnioDeCreacion(rs.getInt(5));
-            o.setNombreDeObra(rs.getString(6));
-            o.setTamanio_fk(rs.getInt(7));
-            o.setUbicacion(rs.getInt(8));
+            int idObra = rs.getInt(1);
+            int autorFk = rs.getInt(2);
+            int tecnicaFk = rs.getInt(3);
+            int generoFk = rs.getInt(4);
+            int anioCreacion = rs.getInt(5);
+            String nombrePintura = rs.getString(6);
+            int tamanio_fk = rs.getInt(7);
+            int ubicacion = rs.getInt(8);
+
+            Autor autor = getAutorPorId(autorFk);
+            Tecnica tecnica = getTecnicaPorId(tecnicaFk);
+            Genero genero = getGeneroPorId(generoFk);
+            Tamanio tamanio = getTamanioPorId(tamanio_fk);
+            Sala sala = getSalaPorId(ubicacion);
+
+            o.setId(idObra);
+            o.setAutor(autor);
+            o.setTecnica(tecnica);
+            o.setGenero(genero);
+            o.setAnioDeCreacion(anioCreacion);
+            o.setNombreDeObra(nombrePintura);
+            o.setTamanio(tamanio);
+            o.setUbicacion(sala);
 
         }
 
@@ -168,15 +326,21 @@ public class Data {
 
         while (rs.next()) {
             int id = rs.getInt(1);
-            int autor = rs.getInt(2);
-            int tecnica = rs.getInt(3);
-            int genero = rs.getInt(4);
+            int autorFk = rs.getInt(2);
+            int tecnicaFk = rs.getInt(3);
+            int generoFk = rs.getInt(4);
             int anioCreacion = rs.getInt(5);
             String nombrePintura = rs.getString(6);
             int tamanio_fk = rs.getInt(7);
             int ubicacion = rs.getInt(8);
 
-            Obra o = new Obra(id, autor, tecnica, genero, anioCreacion, nombrePintura, tamanio_fk, ubicacion);
+            Autor autor = getAutorPorId(autorFk);
+            Tecnica tecnica = getTecnicaPorId(tecnicaFk);
+            Genero genero = getGeneroPorId(generoFk);
+            Tamanio tamanio = getTamanioPorId(tamanio_fk);
+            Sala sala = getSalaPorId(ubicacion);
+
+            Obra o = new Obra(id, autor, tecnica, genero, anioCreacion, nombrePintura, tamanio, sala);
 
             obras.add(o);
 
@@ -185,17 +349,17 @@ public class Data {
         return obras;
     }
 
-    public Tamanio getTamanio(int idTamanio) throws SQLException {
+    public Tamanio getTamanioPorId(int idTamanio) throws SQLException {
         Tamanio t = new Tamanio();
 
         query = "SELECT * FROM tamanio WHERE id=" + idTamanio + "";
 
-        rs = con.ejecutarSelect(query);
+        rsTamanio = con.ejecutarSelect(query);
 
-        while (rs.next()) {
-            t.setId(rs.getInt(1));
-            t.setAlto(rs.getInt(2));
-            t.setAncho(rs.getInt(3));
+        while (rsTamanio.next()) {
+            t.setId(rsTamanio.getInt(1));
+            t.setAlto(rsTamanio.getInt(2));
+            t.setAncho(rsTamanio.getInt(3));
         }
 
         return t;
@@ -221,10 +385,10 @@ public class Data {
 
     }
 
-    public void registrarObra(int autor, int tecnica, int genero, int anioCreacion, String nombrePintura, int idTamanio, int ubicacion) throws SQLException {
+    public void registrarObra(Obra obra) throws SQLException {
 
-        query = "INSERT INTO obra VALUES(NULL," + autor + "," + tecnica + ", " + genero + ", "
-                + "" + anioCreacion + ", '" + nombrePintura + "' ," + idTamanio + ", " + ubicacion + ")";
+        query = "INSERT INTO obra VALUES(NULL," + obra.getAutor().getId() + "," + obra.getTecnica().getId() + ", " + obra.getGenero().getId() + ", "
+                + "" + obra.getAnioDeCreacion() + ", '" + obra.getNombreDeObra() + "' ," + obra.getTamanio().getId() + ", " + obra.getUbicacion().getId() + ")";
 
         con.ejecutar(query);
     }

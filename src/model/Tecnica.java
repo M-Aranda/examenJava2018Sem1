@@ -15,6 +15,8 @@ public class Tecnica extends CualidadNoMedible {
         super(id, nombre);
     }
 
+
+
     @Override
     public int getId() {
         return super.id;

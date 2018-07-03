@@ -12,22 +12,22 @@ package model;
 public class Obra {
 
     private int id;
-    private int autor_fk;
-    private int tecnica_fk;
-    private int genero_fk;
+    private Autor autor;
+    private Tecnica tecnica;
+    private Genero genero;
     private int anioDeCreacion;
     private String nombreDeObra;
-    private int tamanio_fk;
-    private int ubicacion;
+    private Tamanio tamanio;
+    private Sala ubicacion;
 
-    public Obra(int id, int autor_fk, int tecnica_fk, int genero_fk, int anioDeCreacion, String nombreDeObra, int tamanio_fk, int ubicacion) {
+    public Obra(int id, Autor autor, Tecnica tecnica, Genero genero, int anioDeCreacion, String nombreDeObra, Tamanio tamanio, Sala ubicacion) {
         this.id = id;
-        this.autor_fk = autor_fk;
-        this.tecnica_fk = tecnica_fk;
-        this.genero_fk = genero_fk;
+        this.autor = autor;
+        this.tecnica = tecnica;
+        this.genero = genero;
         this.anioDeCreacion = anioDeCreacion;
         this.nombreDeObra = nombreDeObra;
-        this.tamanio_fk = tamanio_fk;
+        this.tamanio = tamanio;
         this.ubicacion = ubicacion;
     }
 
@@ -42,28 +42,28 @@ public class Obra {
         this.id = id;
     }
 
-    public int getAutor_fk() {
-        return autor_fk;
+    public Autor getAutor() {
+        return autor;
     }
 
-    public void setAutor_fk(int autor_fk) {
-        this.autor_fk = autor_fk;
+    public void setAutor(Autor autor) {
+        this.autor = autor;
     }
 
-    public int getTecnica_fk() {
-        return tecnica_fk;
+    public Tecnica getTecnica() {
+        return tecnica;
     }
 
-    public void setTecnica_fk(int tecnica_fk) {
-        this.tecnica_fk = tecnica_fk;
+    public void setTecnica(Tecnica tecnica) {
+        this.tecnica = tecnica;
     }
 
-    public int getGenero_fk() {
-        return genero_fk;
+    public Genero getGenero() {
+        return genero;
     }
 
-    public void setGenero_fk(int genero_fk) {
-        this.genero_fk = genero_fk;
+    public void setGenero(Genero genero) {
+        this.genero = genero;
     }
 
     public int getAnioDeCreacion() {
@@ -82,19 +82,19 @@ public class Obra {
         this.nombreDeObra = nombreDeObra;
     }
 
-    public int getTamanio_fk() {
-        return tamanio_fk;
+    public Tamanio getTamanio() {
+        return tamanio;
     }
 
-    public void setTamanio_fk(int tamanio_fk) {
-        this.tamanio_fk = tamanio_fk;
+    public void setTamanio(Tamanio tamanio) {
+        this.tamanio = tamanio;
     }
 
-    public int getUbicacion() {
+    public Sala getUbicacion() {
         return ubicacion;
     }
 
-    public void setUbicacion(int ubicacion) {
+    public void setUbicacion(Sala ubicacion) {
         this.ubicacion = ubicacion;
     }
 

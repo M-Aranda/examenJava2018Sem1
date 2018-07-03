@@ -14,16 +14,20 @@ public class Sala {
     private int tempEnGradosCelsiusDeLaSala;
     private boolean tieneCierreCentralizado;
     private boolean tieneAlarmaContraIncendios;
-    private int encargadoDeSalafk;
+    private EncargadoDeSala encargadoDeSala;
 
-    public Sala(int id, String nombre, int cantidadDeLamparasInstaladas, int tempEnGradosCelsiusDeLaSala, boolean tieneCierreCentralizado, boolean tieneAlarmaContraIncendios, int encargadoDeSalafk) {
+    public Sala(int id, String nombre, int cantidadDeLamparasInstaladas, int tempEnGradosCelsiusDeLaSala, boolean tieneCierreCentralizado, boolean tieneAlarmaContraIncendios, EncargadoDeSala encargadoDeSala) {
         this.id = id;
         this.nombre = nombre;
         this.cantidadDeLamparasInstaladas = cantidadDeLamparasInstaladas;
         this.tempEnGradosCelsiusDeLaSala = tempEnGradosCelsiusDeLaSala;
         this.tieneCierreCentralizado = tieneCierreCentralizado;
         this.tieneAlarmaContraIncendios = tieneAlarmaContraIncendios;
-        this.encargadoDeSalafk = encargadoDeSalafk;
+        this.encargadoDeSala = encargadoDeSala;
+    }
+
+    public Sala() {
+        
     }
 
     public int getId() {
@@ -74,12 +78,12 @@ public class Sala {
         this.tieneAlarmaContraIncendios = tieneAlarmaContraIncendios;
     }
 
-    public int getEncargadoDeSalafk() {
-        return encargadoDeSalafk;
+    public EncargadoDeSala getEncargadoDeSalafk() {
+        return encargadoDeSala;
     }
 
-    public void setEncargadoDeSalafk(int encargadoDeSalafk) {
-        this.encargadoDeSalafk = encargadoDeSalafk;
+    public void setEncargadoDeSalafk(EncargadoDeSala encargadoDeSala) {
+        this.encargadoDeSala = encargadoDeSala;
     }
 
     @Override

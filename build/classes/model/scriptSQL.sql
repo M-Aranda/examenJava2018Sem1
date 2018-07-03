@@ -44,6 +44,9 @@ PRIMARY KEY(id)
 );
 
 
+
+
+
 CREATE TABLE genero(
 id INT AUTO_INCREMENT,
 nombreGenero VARCHAR (30),
@@ -113,6 +116,7 @@ INSERT INTO obra VALUES (NULL,1,1,5,1650,'El suplicio',1,1);
 INSERT INTO obra VALUES (NULL,1,2,3,1640,'La tragedia',2,1);
 INSERT INTO obra VALUES (NULL,2,1,4,1750,'Conquista',3,2);
 INSERT INTO obra VALUES (NULL,3,4,4,1751,'Divinidad',4,3);
+
 
 
 

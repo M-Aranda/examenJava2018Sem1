@@ -182,7 +182,7 @@ public class App extends javax.swing.JFrame {
             }
         });
 
-        lblVerSala.setText("Sala");
+        lblVerSala.setText("Filtrar por sala");
 
         cboSeleccionarSalaAVer.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -409,7 +409,7 @@ public class App extends javax.swing.JFrame {
         autores = d.getAutores();
 
         for (Autor a : autores) {
-            cboAutor.addItem(a.getNombre());
+            cboAutor.addItem(a);
         }
 
     }
@@ -424,12 +424,10 @@ public class App extends javax.swing.JFrame {
         for (Tecnica t : tecnicas) {
             cboTecnica.addItem(t);
         }
-        
+
         //La siguiente linea te permite rescatar el objeto que esta seleccionado
         //luego puedes usar los metodos del objeto rescatado, y por ende, ver sus atributos
         //Tecnica t = (Tecnica)cboTecnica.getSelectedItem();
-        
-
     }
 
     private void iniciarComboBoxGenero() throws SQLException {
@@ -454,6 +452,7 @@ public class App extends javax.swing.JFrame {
 
         for (Sala s : salas) {
             cboSeleccionarSalaAVer.addItem(s);
+
         }
 
     }
@@ -519,14 +518,14 @@ public class App extends javax.swing.JFrame {
             }
 
             txtCodigoObra.setText(String.valueOf(obra.getId()));
-            cboAutor.setSelectedIndex(obra.getAutor_fk() - 1);
-            cboTecnica.setSelectedIndex(obra.getTecnica_fk() - 1);
-            cboGenero.setSelectedIndex(obra.getGenero_fk() - 1);
+            cboAutor.setSelectedIndex(obra.getAutor().getId() - 1);
+            cboTecnica.setSelectedIndex(obra.getTecnica().getId() - 1);
+            cboGenero.setSelectedIndex(obra.getGenero().getId() - 1);
             txtAnioDeCreacion.setText(String.valueOf(obra.getAnioDeCreacion()));
             txtNombreDeObra.setText(obra.getNombreDeObra());
 
             try {
-                t = d.getTamanio(obra.getId());
+                t = d.getTamanioPorId(obra.getId());
             } catch (SQLException ex) {
                 Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -536,7 +535,7 @@ public class App extends javax.swing.JFrame {
 
             txtTamanio.setText(ancho + "," + alto);
 
-            cboSala.setSelectedIndex(obra.getUbicacion() - 1);
+            cboSala.setSelectedIndex(obra.getUbicacion().getId() - 1);
 
             deshabilitarComponentesDeIngresoDeDatosParaRegistrarObras();
 
@@ -586,19 +585,19 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVerObrasDeTodasLasSalasActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        int idDeTamanio = 0;
-        int anioCreacion = 0;
-        int ancho = 0;
-        int alto = 0;
-        String tamanio = "";
-        String anchoComoString = "";
-        String altoComoString = "";
+//        int idDeTamanio = 0;
+//        int anioCreacion = 0;
+//        int ancho = 0;
+//        int alto = 0;
+//        String tamanio = "";
+//        String anchoComoString = "";
+//        String altoComoString = "";
         try {
-            int idAutor = cboAutor.getSelectedIndex() + 1;
-            int idTecnica = cboTecnica.getSelectedIndex() + 1;
-            int idGenero = cboGenero.getSelectedIndex() + 1;
+            Autor autor = (Autor) cboAutor.getSelectedItem();
+            Tecnica tecnica = (Tecnica) cboTecnica.getSelectedItem();
+            Genero genero = (Genero) cboGenero.getSelectedItem();
 //            try {
-            anioCreacion = Integer.parseInt(txtAnioDeCreacion.getText());
+            int anioCreacion = Integer.parseInt(txtAnioDeCreacion.getText());
 //            } catch (NumberFormatException ne) {
 //                JOptionPane.showMessageDialog(null, "Verifique que todos los campos tengan datos validos");
 //
@@ -607,29 +606,32 @@ public class App extends javax.swing.JFrame {
             String nombreObra = txtNombreDeObra.getText();
 
 //            try {
-            tamanio = txtTamanio.getText();
+            String tamanio = txtTamanio.getText();
             tamanio = tamanio.trim();
             String[] partes = tamanio.split(",");
-            anchoComoString = partes[0];
-            altoComoString = partes[1];
+            String anchoComoString = partes[0];
+            String altoComoString = partes[1];
 //            } catch (Exception e) {
 //                JOptionPane.showMessageDialog(null, "Verifique que todos los campos tengan datos validos");
 //
 //            }
 //
 //            try {
-            ancho = Integer.parseInt(anchoComoString);
-            alto = Integer.parseInt(altoComoString);
+            int ancho = Integer.parseInt(anchoComoString);
+            int alto = Integer.parseInt(altoComoString);
 
 //            } catch (NumberFormatException ne) {
 //                JOptionPane.showMessageDialog(null, "Verifique que todos los campos tengan datos validos");
 //
 //            }
-            int idSala = cboSala.getSelectedIndex() + 1;
+            Sala sala = (Sala) cboSala.getSelectedItem();
 
             d.crearTamanio(ancho, alto);
-            idDeTamanio = d.obtenerIdTamanioMasReciente();
-            d.registrarObra(idAutor, idTecnica, idGenero, anioCreacion, nombreObra, idDeTamanio, idSala);
+            int idDeTamanio = d.obtenerIdTamanioMasReciente();
+            Tamanio tam = d.getTamanioPorId(idDeTamanio);
+            Obra obra = new Obra(1, autor, tecnica, genero, anioCreacion, nombreObra, tam, sala);
+            System.out.println(obra);
+            d.registrarObra(obra);
             cargarTablaDatos();
             JOptionPane.showMessageDialog(null, "Registro Exitoso");
         } catch (SQLException ex) {
@@ -655,6 +657,11 @@ public class App extends javax.swing.JFrame {
         btnRegistrar.setEnabled(false);
         btnEliminar.setEnabled(true);
         btnCancelar.setVisible(true);
+
+        btnVerObrasDeTodasLasSalas.setEnabled(false);
+        btnVerObrasDeSalaSeleccionada.setEnabled(false);
+        cboSeleccionarSalaAVer.setEnabled(false);
+
     }
 
     private void habilitarComponentesDeIngresoDeDatosParaRegistrarObras() {
@@ -669,6 +676,11 @@ public class App extends javax.swing.JFrame {
         btnRegistrar.setEnabled(false);
         btnCancelar.setVisible(false);
         btnRegistrar.setEnabled(true);
+
+        btnVerObrasDeTodasLasSalas.setEnabled(true);
+        btnVerObrasDeSalaSeleccionada.setEnabled(true);
+        cboSeleccionarSalaAVer.setEnabled(true);
+
         resetearComponentesDeIngresoDeDatosParaRegistrarObras();
     }
 

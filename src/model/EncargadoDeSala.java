@@ -11,6 +11,13 @@ public class EncargadoDeSala extends Persona {
         this.anioDeIngreso = anioDeIngreso;
     }
 
+    public EncargadoDeSala(int id, String nombre, String rut) {
+        super(id, nombre, rut);
+    }
+
+    
+
+
     public String getProfesion() {
         return profesion;
     }
