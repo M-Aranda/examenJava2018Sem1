@@ -365,6 +365,7 @@ public class Data {
         return t;
     }
 
+
     public void crearTamanio(int ancho, int alto) throws SQLException {
         query = "INSERT INTO tamanio VALUES (NULL, " + ancho + "," + alto + ")";
         con.ejecutar(query);
@@ -389,6 +390,14 @@ public class Data {
 
         query = "INSERT INTO obra VALUES(NULL," + obra.getAutor().getId() + "," + obra.getTecnica().getId() + ", " + obra.getGenero().getId() + ", "
                 + "" + obra.getAnioDeCreacion() + ", '" + obra.getNombreDeObra() + "' ," + obra.getTamanio().getId() + ", " + obra.getUbicacion().getId() + ")";
+
+        con.ejecutar(query);
+    }
+
+    public void actualizarObra(Obra obra) throws SQLException {
+
+        query = "UPDATE obra SET autor_fk=" + obra.getAutor().getId() + ", tecnica_fk=" + obra.getTecnica().getId() + ", genero_fk=" + obra.getGenero().getId() + ", "
+                + "anioDeCreacion=" + obra.getAnioDeCreacion() + ", nombreDePintura='" + obra.getNombreDeObra() + "' , tamanio_fk=" + obra.getTamanio().getId() + ", ubicacion=" + obra.getUbicacion().getId() + " WHERE id=" + obra.getId() + "";
 
         con.ejecutar(query);
     }

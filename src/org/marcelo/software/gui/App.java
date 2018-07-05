@@ -53,6 +53,8 @@ public class App extends javax.swing.JFrame {
         txtTamanio.setToolTipText("Coloque el ancho y luego el alto, "
                 + "separado por una coma (no ponga espacios)");
         txtCodigoObra.setEnabled(false);
+        btnActualizar.setVisible(false);
+        chkModificarDatos.setVisible(false);
         try {
             d = new Data();
         } catch (ClassNotFoundException ex) {
@@ -102,6 +104,8 @@ public class App extends javax.swing.JFrame {
         btnVerObrasDeSalaSeleccionada = new javax.swing.JButton();
         btnVerObrasDeTodasLasSalas = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
+        btnActualizar = new javax.swing.JButton();
+        chkModificarDatos = new javax.swing.JCheckBox();
         mnbOpciones = new javax.swing.JMenuBar();
         jmBusqueda = new javax.swing.JMenu();
         mniSalir = new javax.swing.JMenuItem();
@@ -200,6 +204,20 @@ public class App extends javax.swing.JFrame {
             }
         });
 
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+
+        chkModificarDatos.setText("Deseo modificar datos");
+        chkModificarDatos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkModificarDatosActionPerformed(evt);
+            }
+        });
+
         jmBusqueda.setText("Busqueda");
 
         mniSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
@@ -253,16 +271,20 @@ public class App extends javax.swing.JFrame {
                                                     .addComponent(cboAutor, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                                         .addGap(141, 141, 141)
                                         .addComponent(lblVerSala)
-                                        .addGap(48, 48, 48))
+                                        .addGap(56, 56, 56))
                                     .addGroup(jfrSesionLayout.createSequentialGroup()
                                         .addGap(13, 13, 13)
                                         .addComponent(btnCancelar)
                                         .addGap(48, 48, 48)
                                         .addComponent(btnRegistrar)
                                         .addGap(49, 49, 49)
-                                        .addComponent(btnEliminar)
-                                        .addGap(16, 16, 16)))
-                                .addGap(8, 8, 8)
+                                        .addGroup(jfrSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(btnEliminar)
+                                            .addGroup(jfrSesionLayout.createSequentialGroup()
+                                                .addComponent(btnActualizar)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(chkModificarDatos)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addComponent(btnVerObrasDeTodasLasSalas))
                             .addGroup(jfrSesionLayout.createSequentialGroup()
                                 .addComponent(lblAutor)
@@ -332,7 +354,11 @@ public class App extends javax.swing.JFrame {
                 .addGroup(jfrSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSala)
                     .addComponent(cboSala, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(59, 59, 59)
+                .addGap(30, 30, 30)
+                .addGroup(jfrSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnActualizar)
+                    .addComponent(chkModificarDatos))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jfrSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnRegistrar)
@@ -544,24 +570,24 @@ public class App extends javax.swing.JFrame {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         habilitarComponentesDeIngresoDeDatosParaRegistrarObras();
+        btnActualizar.setVisible(false);
+        chkModificarDatos.setVisible(false);
+        chkModificarDatos.setSelected(false);
+        btnEliminar.setEnabled(false);
 
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int idObraAEliminar = Integer.parseInt(txtCodigoObra.getText());
-        
-        
-        
-       int opcion= JOptionPane.showOptionDialog(null, 
-        "Esta por eliminar una obra. Desea continuar?", 
-        "Aviso", 
-        JOptionPane.OK_CANCEL_OPTION, 
-        JOptionPane.INFORMATION_MESSAGE, 
-        null, 
-        new String[]{"Si", "No"}, 
-        "default");
-        
-        
+
+        int opcion = JOptionPane.showOptionDialog(null,
+                "Esta por eliminar una obra. Desea continuar?",
+                "Aviso",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                new String[]{"Si", "No"},
+                "default");
 
         //int dialogo = JOptionPane.showConfirmDialog(null, "Esta por eliminar una obra. Desea continuar?");
         if (opcion == JOptionPane.YES_OPTION) {
@@ -573,6 +599,7 @@ public class App extends javax.swing.JFrame {
             }
             habilitarComponentesDeIngresoDeDatosParaRegistrarObras();
             btnEliminar.setEnabled(false);
+            chkModificarDatos.setVisible(false);
             JOptionPane.showMessageDialog(null, "Elminacion exitosa");
 
         } else if (opcion == JOptionPane.NO_OPTION) {
@@ -606,61 +633,38 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVerObrasDeTodasLasSalasActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-//        int idDeTamanio = 0;
-//        int anioCreacion = 0;
-//        int ancho = 0;
-//        int alto = 0;
-//        String tamanio = "";
-//        String anchoComoString = "";
-//        String altoComoString = "";
 
 
-        
-        
-       int opcion= JOptionPane.showOptionDialog(null, 
-        "Esta por registrar una obra. Desea continuar?", 
-        "Aviso", 
-        JOptionPane.OK_CANCEL_OPTION, 
-        JOptionPane.INFORMATION_MESSAGE, 
-        null, 
-        new String[]{"Si", "No"}, 
-        "default");
-        
+        int opcion = JOptionPane.showOptionDialog(null,
+                "Esta por registrar una obra. Desea continuar?",
+                "Aviso",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                new String[]{"Si", "No"},
+                "default");
 
-        //int dialogo = JOptionPane.showConfirmDialog(null, "Esta por registrar una obra. Desea continuar?");
         if (opcion == JOptionPane.YES_OPTION) {
             try {
                 Autor autor = (Autor) cboAutor.getSelectedItem();
                 Tecnica tecnica = (Tecnica) cboTecnica.getSelectedItem();
                 Genero genero = (Genero) cboGenero.getSelectedItem();
-//            try {
+
                 int anioCreacion = Integer.parseInt(txtAnioDeCreacion.getText());
-//            } catch (NumberFormatException ne) {
-//                JOptionPane.showMessageDialog(null, "Verifique que todos los campos tengan datos validos");
-//
-//            }
+
 
                 String nombreObra = txtNombreDeObra.getText();
 
-//            try {
+
                 String tamanio = txtTamanio.getText();
                 tamanio = tamanio.trim();
                 String[] partes = tamanio.split(",");
                 String anchoComoString = partes[0];
                 String altoComoString = partes[1];
-//            } catch (Exception e) {
-//                JOptionPane.showMessageDialog(null, "Verifique que todos los campos tengan datos validos");
-//
-//            }
-//
-//            try {
+
                 int ancho = Integer.parseInt(anchoComoString);
                 int alto = Integer.parseInt(altoComoString);
 
-//            } catch (NumberFormatException ne) {
-//                JOptionPane.showMessageDialog(null, "Verifique que todos los campos tengan datos validos");
-//
-//            }
                 Sala sala = (Sala) cboSala.getSelectedItem();
 
                 d.crearTamanio(ancho, alto);
@@ -686,6 +690,97 @@ public class App extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+
+        int opcion = JOptionPane.showOptionDialog(null,
+                "Esta por actualizar una obra. Desea continuar?",
+                "Aviso",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                new String[]{"Si", "No"},
+                "default");
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            try {
+                int idDeLaObra=Integer.parseInt(txtCodigoObra.getText());
+                Autor autor = (Autor) cboAutor.getSelectedItem();
+                Tecnica tecnica = (Tecnica) cboTecnica.getSelectedItem();
+                Genero genero = (Genero) cboGenero.getSelectedItem();
+
+                int anioCreacion = Integer.parseInt(txtAnioDeCreacion.getText());
+
+                String nombreObra = txtNombreDeObra.getText();
+
+                String tamanio = txtTamanio.getText();
+                tamanio = tamanio.trim();
+                String[] partes = tamanio.split(",");
+                String anchoComoString = partes[0];
+                String altoComoString = partes[1];
+
+                int ancho = Integer.parseInt(anchoComoString);
+                int alto = Integer.parseInt(altoComoString);
+
+                Sala sala = (Sala) cboSala.getSelectedItem();
+
+                d.crearTamanio(ancho, alto);
+                int idDeTamanio = d.obtenerIdTamanioMasReciente();
+                Tamanio tam = d.getTamanioPorId(idDeTamanio);
+                Obra obra = new Obra(idDeLaObra, autor, tecnica, genero, anioCreacion, nombreObra, tam, sala);
+                d.actualizarObra(obra);
+                cargarTablaDatos();
+                JOptionPane.showMessageDialog(null, "Actualizacion exitosa");
+            } catch (SQLException ex) {
+                Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Verifique que todos los campos tengan datos validos");
+            } finally {
+                resetearComponentesDeIngresoDeDatosParaRegistrarObras();
+                btnActualizar.setVisible(false);
+                btnActualizar.setEnabled(false);
+                chkModificarDatos.setSelected(false);
+                chkModificarDatos.setVisible(false);
+                btnEliminar.setEnabled(false);
+                btnCancelar.setVisible(false);
+            }
+
+        } else if (opcion == JOptionPane.NO_OPTION) {
+            resetearComponentesDeIngresoDeDatosParaRegistrarObras();
+        }
+
+
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void chkModificarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkModificarDatosActionPerformed
+        if (chkModificarDatos.isSelected()) {
+            btnActualizar.setEnabled(true);
+            habilitarIngresoOSeleccionDeDatosParaActualizar();
+        } else if (!chkModificarDatos.isSelected()) {
+            btnActualizar.setEnabled(false);
+            deshabilitarIngresoOSeleccionDeDatosParaActualizar();
+        }
+    }//GEN-LAST:event_chkModificarDatosActionPerformed
+
+    private void habilitarIngresoOSeleccionDeDatosParaActualizar() {
+        cboAutor.setEnabled(true);
+        cboTecnica.setEnabled(true);
+        cboGenero.setEnabled(true);
+        txtAnioDeCreacion.setEnabled(true);
+        txtNombreDeObra.setEnabled(true);
+        txtTamanio.setEnabled(true);
+        cboSala.setEnabled(true);
+    }
+    
+        private void deshabilitarIngresoOSeleccionDeDatosParaActualizar() {
+        cboAutor.setEnabled(false);
+        cboTecnica.setEnabled(false);
+        cboGenero.setEnabled(false);
+        txtAnioDeCreacion.setEnabled(false);
+        txtNombreDeObra.setEnabled(false);
+        txtTamanio.setEnabled(false);
+        cboSala.setEnabled(false);
+    }
+
     private void deshabilitarComponentesDeIngresoDeDatosParaRegistrarObras() {
 
         cboAutor.setEnabled(false);
@@ -698,6 +793,9 @@ public class App extends javax.swing.JFrame {
         btnRegistrar.setEnabled(false);
         btnEliminar.setEnabled(true);
         btnCancelar.setVisible(true);
+        btnActualizar.setVisible(true);
+        btnActualizar.setEnabled(false);
+        chkModificarDatos.setVisible(true);
 
         btnVerObrasDeTodasLasSalas.setEnabled(false);
         btnVerObrasDeSalaSeleccionada.setEnabled(false);
@@ -716,6 +814,7 @@ public class App extends javax.swing.JFrame {
         cboSala.setEnabled(true);
         btnRegistrar.setEnabled(false);
         btnCancelar.setVisible(false);
+        btnActualizar.setVisible(false);
         btnRegistrar.setEnabled(true);
 
         btnVerObrasDeTodasLasSalas.setEnabled(true);
@@ -828,6 +927,7 @@ public class App extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnOk;
@@ -839,6 +939,7 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JComboBox cboSala;
     private javax.swing.JComboBox cboSeleccionarSalaAVer;
     private javax.swing.JComboBox cboTecnica;
+    private javax.swing.JCheckBox chkModificarDatos;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JFrame jfrSesion;

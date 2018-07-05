@@ -13,7 +13,6 @@ PRIMARY KEY(id)
 
 
 
-
 CREATE TABLE encargadoDeSala(
 id INT AUTO_INCREMENT,
 nombre VARCHAR (30),
