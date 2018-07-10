@@ -911,6 +911,7 @@ public class App extends javax.swing.JFrame {
             txtNacionalidadAutor.setText("");
             try {
                 cargarTablaAutores();
+                iniciarComboBoxAutor();
             } catch (SQLException ex) {
                 Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
             }
