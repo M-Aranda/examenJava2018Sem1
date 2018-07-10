@@ -47,6 +47,11 @@ public class Data {
 
     }
 
+    public void crearAutor(String nombre, String apellido, String rut, String nacionalidad) throws SQLException {
+        query = "INSERT INTO autor VALUES (NULL, '" + nombre + "', '" + apellido + "' , '" + rut + "' , '" + nacionalidad + "' )";
+        con.ejecutar(query);
+    }
+
     public List<Tecnica> getTecnicas() throws SQLException {
         List<Tecnica> tecnicas = new ArrayList();
 
@@ -364,7 +369,6 @@ public class Data {
 
         return t;
     }
-
 
     public void crearTamanio(int ancho, int alto) throws SQLException {
         query = "INSERT INTO tamanio VALUES (NULL, " + ancho + "," + alto + ")";

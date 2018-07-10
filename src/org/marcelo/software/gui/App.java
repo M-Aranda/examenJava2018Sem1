@@ -26,6 +26,7 @@ import model.Obra;
 import model.Sala;
 import modelosDeTabla.TMModelObrasEnSalas;
 import model.Tamanio;
+import modelosDeTabla.TMModelAutores;
 
 /**
  *
@@ -40,13 +41,16 @@ public class App extends javax.swing.JFrame {
     private String claveDeLogin;
     private Data d;
     private TMModelObrasEnSalas modelObrasEnSalas;
+    private TMModelAutores modelAutores;
     private List<Obra> obras;
+    private List<Autor> autores;
 
     public App() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         jfrSesion.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        jfrAutores.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         btnCancelar.setVisible(false);
         btnEliminar.setEnabled(false);
@@ -66,6 +70,7 @@ public class App extends javax.swing.JFrame {
         try {
             inicializarComboBoxes();
             cargarTablaDatos();
+            cargarTablaAutores();
         } catch (SQLException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -108,7 +113,20 @@ public class App extends javax.swing.JFrame {
         chkModificarDatos = new javax.swing.JCheckBox();
         mnbOpciones = new javax.swing.JMenuBar();
         jmBusqueda = new javax.swing.JMenu();
+        jmnCrearAutor = new javax.swing.JMenuItem();
         mniSalir = new javax.swing.JMenuItem();
+        jfrAutores = new javax.swing.JFrame();
+        btnCrearAutor = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblAutores = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        txtNombreAutor = new javax.swing.JTextField();
+        txtApellidoAutor = new javax.swing.JTextField();
+        txtRutAutor = new javax.swing.JTextField();
+        txtNacionalidadAutor = new javax.swing.JTextField();
         lblNombreLogin = new javax.swing.JLabel();
         lblClaveLogin = new javax.swing.JLabel();
         txtNombreLogin = new javax.swing.JTextField();
@@ -218,7 +236,16 @@ public class App extends javax.swing.JFrame {
             }
         });
 
-        jmBusqueda.setText("Busqueda");
+        jmBusqueda.setText("Opciones extra");
+
+        jmnCrearAutor.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        jmnCrearAutor.setText("Crear autor");
+        jmnCrearAutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmnCrearAutorActionPerformed(evt);
+            }
+        });
+        jmBusqueda.add(jmnCrearAutor);
 
         mniSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         mniSalir.setText("Salir");
@@ -366,6 +393,96 @@ public class App extends javax.swing.JFrame {
                 .addGap(1, 1, 1))
         );
 
+        btnCrearAutor.setText("Crear autor");
+        btnCrearAutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearAutorActionPerformed(evt);
+            }
+        });
+
+        tblAutores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane2.setViewportView(tblAutores);
+
+        jLabel1.setText("Nombre");
+
+        jLabel2.setText("Apellido");
+
+        jLabel3.setText("Rut");
+
+        jLabel4.setText("Nacionalidad");
+
+        javax.swing.GroupLayout jfrAutoresLayout = new javax.swing.GroupLayout(jfrAutores.getContentPane());
+        jfrAutores.getContentPane().setLayout(jfrAutoresLayout);
+        jfrAutoresLayout.setHorizontalGroup(
+            jfrAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jfrAutoresLayout.createSequentialGroup()
+                .addGroup(jfrAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jfrAutoresLayout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addGroup(jfrAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jfrAutoresLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(32, 32, 32)
+                                .addComponent(txtNombreAutor, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
+                            .addGroup(jfrAutoresLayout.createSequentialGroup()
+                                .addGroup(jfrAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jfrAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtRutAutor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtApellidoAutor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jfrAutoresLayout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtNacionalidadAutor, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)))
+                        .addGap(0, 333, Short.MAX_VALUE))
+                    .addGroup(jfrAutoresLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(btnCrearAutor)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jfrAutoresLayout.setVerticalGroup(
+            jfrAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jfrAutoresLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jfrAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtNombreAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jfrAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtApellidoAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jfrAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtRutAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jfrAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtNacionalidadAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jfrAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jfrAutoresLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jfrAutoresLayout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(btnCrearAutor)))
+                .addContainerGap(27, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblNombreLogin.setText("Nombre:");
@@ -504,6 +621,13 @@ public class App extends javax.swing.JFrame {
 
     }
 
+    private void cargarTablaAutores() throws SQLException {
+        autores = d.getAutores();
+        modelAutores = new TMModelAutores(autores);
+        tblAutores.setModel(modelAutores);
+
+    }
+
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
 
@@ -634,7 +758,6 @@ public class App extends javax.swing.JFrame {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
 
-
         int opcion = JOptionPane.showOptionDialog(null,
                 "Esta por registrar una obra. Desea continuar?",
                 "Aviso",
@@ -652,9 +775,7 @@ public class App extends javax.swing.JFrame {
 
                 int anioCreacion = Integer.parseInt(txtAnioDeCreacion.getText());
 
-
                 String nombreObra = txtNombreDeObra.getText();
-
 
                 String tamanio = txtTamanio.getText();
                 tamanio = tamanio.trim();
@@ -703,7 +824,7 @@ public class App extends javax.swing.JFrame {
 
         if (opcion == JOptionPane.YES_OPTION) {
             try {
-                int idDeLaObra=Integer.parseInt(txtCodigoObra.getText());
+                int idDeLaObra = Integer.parseInt(txtCodigoObra.getText());
                 Autor autor = (Autor) cboAutor.getSelectedItem();
                 Tecnica tecnica = (Tecnica) cboTecnica.getSelectedItem();
                 Genero genero = (Genero) cboGenero.getSelectedItem();
@@ -761,6 +882,43 @@ public class App extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_chkModificarDatosActionPerformed
 
+    private void jmnCrearAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnCrearAutorActionPerformed
+
+        jfrAutores.setBounds(WIDTH, WIDTH, 600, 270);
+        jfrAutores.setLocationRelativeTo(null);
+        jfrAutores.setVisible(true);
+        jfrAutores.setResizable(false);
+
+
+    }//GEN-LAST:event_jmnCrearAutorActionPerformed
+
+    private void btnCrearAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearAutorActionPerformed
+        String nombreAutor=txtNombreAutor.getText();
+        String apellidoAutor=txtApellidoAutor.getText();
+        String rutAutor=txtRutAutor.getText();
+        String nacionalidadAutor=txtNacionalidadAutor.getText();
+        
+        try {
+            d.crearAutor(nombreAutor, apellidoAutor, rutAutor, nacionalidadAutor);
+            JOptionPane.showMessageDialog(null, "Operacion exitosa");
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            txtNombreAutor.setText("");
+            txtApellidoAutor.setText("");
+            txtRutAutor.setText("");
+            txtNacionalidadAutor.setText("");
+            try {
+                cargarTablaAutores();
+            } catch (SQLException ex) {
+                Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
+    }//GEN-LAST:event_btnCrearAutorActionPerformed
+
     private void habilitarIngresoOSeleccionDeDatosParaActualizar() {
         cboAutor.setEnabled(true);
         cboTecnica.setEnabled(true);
@@ -770,8 +928,8 @@ public class App extends javax.swing.JFrame {
         txtTamanio.setEnabled(true);
         cboSala.setEnabled(true);
     }
-    
-        private void deshabilitarIngresoOSeleccionDeDatosParaActualizar() {
+
+    private void deshabilitarIngresoOSeleccionDeDatosParaActualizar() {
         cboAutor.setEnabled(false);
         cboTecnica.setEnabled(false);
         cboGenero.setEnabled(false);
@@ -929,6 +1087,7 @@ public class App extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnCrearAutor;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnOk;
     private javax.swing.JButton btnRegistrar;
@@ -940,10 +1099,17 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JComboBox cboSeleccionarSalaAVer;
     private javax.swing.JComboBox cboTecnica;
     private javax.swing.JCheckBox chkModificarDatos;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JFrame jfrAutores;
     private javax.swing.JFrame jfrSesion;
     private javax.swing.JMenu jmBusqueda;
+    private javax.swing.JMenuItem jmnCrearAutor;
     private javax.swing.JLabel lblAnioDeCreacion;
     private javax.swing.JLabel lblAutor;
     private javax.swing.JLabel lblClaveLogin;
@@ -958,12 +1124,17 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JLabel lblVerSala;
     private javax.swing.JMenuBar mnbOpciones;
     private javax.swing.JMenuItem mniSalir;
+    private javax.swing.JTable tblAutores;
     private javax.swing.JTable tblDatos;
     private javax.swing.JTextField txtAnioDeCreacion;
+    private javax.swing.JTextField txtApellidoAutor;
     private javax.swing.JTextField txtClaveLogin;
     private javax.swing.JTextField txtCodigoObra;
+    private javax.swing.JTextField txtNacionalidadAutor;
+    private javax.swing.JTextField txtNombreAutor;
     private javax.swing.JTextField txtNombreDeObra;
     private javax.swing.JTextField txtNombreLogin;
+    private javax.swing.JTextField txtRutAutor;
     private javax.swing.JTextField txtTamanio;
     // End of variables declaration//GEN-END:variables
 }
